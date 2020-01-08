@@ -9,7 +9,7 @@ import { using } from 'rxjs';
 })
 export class EventosComponent implements OnInit {
 
-  eventos: any;
+  eventos: any = [];
 
   constructor(private http: HttpClient) { }
 
