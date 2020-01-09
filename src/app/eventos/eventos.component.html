@@ -3,11 +3,12 @@
     <input type="text" class="form-control mr-2" placeholder="buscar">
     <button class="btn btn-outline-success">buscar</button>
   </div>
-</form>  
-<table class="table table=stripped">
+</form>
+<table class="table table-striped">
   <thead class="thead-dark">
     <tr>
       <th>#</th>
+      <th>Imagem</th>
       <th>Tema</th>
       <th>Local</th>
       <th>Data</th>
@@ -19,6 +20,9 @@
   <tbody *ngIf="eventos && eventos.length">
     <tr *ngFor="let evento of eventos">
       <td>{{evento.eventoID}}</td>
+      <td>
+        <img src="http://localhost:5000/img/{{evento.imagemURL}}"  [style.width.px]="1" />
+      </td>
       <td>{{evento.tema}}</td>
       <td>{{evento.local}}</td>
       <td>{{evento.dataEvento}}</td>
