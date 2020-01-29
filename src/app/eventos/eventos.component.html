@@ -1,3 +1,4 @@
+<app-titulo [titulo]="titulo"></app-titulo>
 <div class="d-flex">
   <div class="form-inline mr-auto">
     <div class="form-group mb-2">
@@ -54,13 +55,11 @@
       <div *ngIf="evento.lotes.length">
         {{evento.lotes[0].nome | uppercase}}
       </div>
-
     </td>
     <td>
       <div class="btn-group">
         <button class="btn btn-sm btn-primary"
         tooltip="Editar" (click)="editarEvento(template, evento)">
-
        <i class="fa fa-edit"></i>
       </button>
       <button class="btn btn-sm btn-danger" tooltip="Excluir" (click)="excluirEvento(evento, confirm)">
@@ -125,7 +124,9 @@ role="dialog" aria-labelledby="dialog-sizes-name1">
           <label>Data e Hora</label>
           <input type="text" class="form-control"
           bsDatepicker
-          [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm: a' }"
+          value="{{dataEvento | DateTimeFormatPipe}}"
+          [(ngModel)]="dataEvento"
+          [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm:ss' }"
           [ngClass]="{'is-invalid': registerForm.get('dataEvento').errors && registerForm.get('dataEvento').touched}"
           formControlName="dataEvento" placeholder="Insira a Data e Hora">
           <div *ngIf="registerForm.get('dataEvento').hasError('required') && registerForm.get('dataEvento').touched"
@@ -225,4 +226,6 @@ Deve ser um e-mail válido
     		</div>
   		</div>
 	</div>
+</div>
+<div>
 </div>
