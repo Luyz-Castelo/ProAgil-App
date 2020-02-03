@@ -39,7 +39,7 @@
   <tr *ngFor="let evento of eventosFiltrados">
     <td>
       <img *ngIf="mostrarImagem"
-      src="http://localhost:5000/img/{{evento.imagemURL}}"
+      src="http://localhost:5000/resources/images/{{evento.imagemURL}}?_ts={{dataAtual}}"
       [style.width.px]="imagemLargura"
       [style.margin.px]="imagemMargem">
     </td>
@@ -60,7 +60,7 @@
       <div class="btn-group">
         <button class="btn btn-sm btn-primary"
         tooltip="Editar" (click)="editarEvento(template, evento)">
-       <i class="fa fa-edit"></i>
+        <i class="fa fa-edit"></i>
       </button>
       <button class="btn btn-sm btn-danger" tooltip="Excluir" (click)="excluirEvento(evento, confirm)">
         <i class="fa fa-eraser"></i>
@@ -152,9 +152,20 @@ role="dialog" aria-labelledby="dialog-sizes-name1">
   </div>
   <div class="form-group col-md-9">
     <label>Imagem</label>
-    <input type="text" class="form-control"
-    [ngClass]="{'is-invalid': registerForm.get('imagemURL').errors && registerForm.get('imagemURL').touched}"
-    formControlName="imagemURL" placeholder="Insira a Imagem">
+    <table>
+      <tr>
+        <td><button class="btn btn-success" (click)="file.click()">
+          Enviar Imagem
+        </button>
+        <input type="file" #file [ngClass]="{'is-invalid': registerForm.get('imagemURL').errors
+        && registerForm.get('imagemURL').touched}" (change)="onFileChange($event)"
+        class="form-control is-invalid" formControlName="imagemURL" placeholder=""
+        style="display: none">
+      </td>
+      </tr>
+    </table>
+
+
     <div *ngIf="registerForm.get('imagemURL').hasError('required') && registerForm.get('imagemURL').touched"
     class="invalid-feedback">
     Imagem é obrigatório
@@ -203,29 +214,29 @@ Deve ser um e-mail válido
 <br>
 
 <div bsModal #confirm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
-	<div class="modal-dialog modal-sm">
-  		<div class="modal-content">
-    		<div class="modal-header">
-      			<h4 class="modal-title pull-left">
-        			Deletando Evento
-      			</h4>
-      			<button type="button" class="close pull-right" (click)="confirm.hide()" aria-label="Close">
-        			<span aria-hidden="true">&times;</span>
-      			</button>
-    		</div>
-    		<div class="modal-body">
-      			<p>{{bodyDeletarEvento}}</p>
-    		</div>
-    		<div class="modal-footer btn-group d-flex">
-      			<button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
-        			CANCELAR
-      			</button>
-      			<button type="button" class="btn btn-outline-danger" (click)="confirmeDelete(confirm)">
-          			DELETAR
-        		</button>
-    		</div>
-  		</div>
-	</div>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">
+          Deletando Evento
+        </h4>
+        <button type="button" class="close pull-right" (click)="confirm.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{bodyDeletarEvento}}</p>
+      </div>
+      <div class="modal-footer btn-group d-flex">
+        <button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
+          CANCELAR
+        </button>
+        <button type="button" class="btn btn-outline-danger" (click)="confirmeDelete(confirm)">
+          DELETAR
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 <div>
 </div>
