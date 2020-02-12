@@ -2,10 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TooltipModule, ModalModule, BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { TooltipModule, ModalModule, BsDropdownModule, BsDatepickerModule, TabsModule } from 'ngx-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { NgxMaskModule } from 'ngx-mask';
 import { ToastrModule } from 'ngx-toastr';
 
 import { EventoService } from './_services/evento.service';
@@ -13,6 +13,7 @@ import { EventoService } from './_services/evento.service';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { EventosComponent } from './eventos/eventos.component';
+import { EventoEditComponent } from './eventos/eventoEdit/eventoEdit.component';
 import { PalestrantesComponent } from './Palestrantes/Palestrantes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ContatosComponent } from './contatos/contatos.component';
@@ -29,6 +30,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
       AppComponent,
       NavComponent,
       EventosComponent,
+      EventoEditComponent,
       PalestrantesComponent,
       DashboardComponent,
       ContatosComponent,
@@ -44,6 +46,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
       BsDatepickerModule.forRoot(),
       TooltipModule.forRoot(),
       ModalModule.forRoot(),
+      TabsModule.forRoot(),
+      NgxMaskModule.forRoot(),
       BrowserAnimationsModule,
       ToastrModule.forRoot({
          timeOut: 3000,
