@@ -79,7 +79,7 @@ export class EventosComponent implements OnInit {
       });
   }
 
-  editarEvento(evento: Evento, template: any) {
+  editarEvento(template: any, evento: Evento) {
     this.modoSalvar = 'put';
     this.openModal(template);
     this.evento = Object.assign({}, evento);
