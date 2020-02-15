@@ -88,11 +88,11 @@
         </tab>
         <tab heading="Lotes">
           <div>
-            <div >
-              <fieldset formGroupName="lotes" class="form-group">
-                <legend class="d-flex justify-content-between capitalize">
-                  {{'Lotes'}}
-                  <button class="btn btn-sm btn-warning mb-1">remove</button>
+            <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i=index">
+              <fieldset [formGroupName]="i" class="form-group">
+                <legend class="d-flex capitalize">
+                  Lotes
+                  <button class="btn btn-sm btn-warning mb-1" (click)="removerLote(i)">remove</button>
                 </legend>
                 <div class="row">
                   <div class="form-group col-md-4">
@@ -119,18 +119,17 @@
                 </div>
               </fieldset>
             </div>
-            <button class="btn btn-outline-primary">
+            <button (click)="adicionarLote()" class="btn btn-outline-primary">
               Adicionar Lote
             </button>
           </div>
         </tab>
         <tab heading="Redes Sociais">
-          <div>
-            <fieldset formGroupName="redesSociais" class="form-group">
+          <div formArrayName="redesSociais" *ngFor="let redeSocial of redesSociais.controls; let i=index">
+              <fieldset [formGroupName]="i" class="form-group">
               <legend class="d-flex justify-content-between capitalize">
-                {{'Redes Sociais'}}
-                <button class="btn btn-sm btn-warning mb-1"
-                  >remove</button>
+                Redes Sociais
+                <button class="btn btn-sm btn-warning mb-1" (click)="removerRedeSocial(i)">remove</button>
               </legend>
               <div class="row">
                 <div class="form-group col-md-4">
@@ -157,7 +156,7 @@
               </div>
             </fieldset>
           </div>
-          <button class="btn btn-outline-primary">
+          <button (click)="adicionarRedeSocial()" class="btn btn-outline-primary">
             Adicionar Rede Social
           </button>
         </tab>
