@@ -17,15 +17,16 @@ export class EventoEditComponent implements OnInit {
   evento: Evento = new Evento();
   imagemURL = 'assets/img/upload.png';
   registerForm: FormGroup;
+  arquivo: File;
   fileNameToUpdate: string;
 
-  dataAtual
+  dataAtual;
 
   get lotes(): FormArray {
-   return <FormArray>this.registerForm.get('lotes');
+   return <FormArray> this.registerForm.get('lotes');
   }
   get redesSociais(): FormArray {
-    return <FormArray>this.registerForm.get('redesSociais');
+    return <FormArray> this.registerForm.get('redesSociais');
    }
 
   constructor(
@@ -45,6 +46,7 @@ export class EventoEditComponent implements OnInit {
 
     validation() {
       this.registerForm = this.fb.group({
+        id: [],
         tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
         local: ['', Validators.required],
         dataEvento: ['', Validators.required],
@@ -64,7 +66,7 @@ export class EventoEditComponent implements OnInit {
           this.evento = Object.assign({}, evento);
           this.fileNameToUpdate = evento.imagemURL.toString();
 
-          this.imagemURL = `http://localhost:5000/resources/images/${this.evento.imagemURL}?_ts=${this.dataAtual}`
+          this.imagemURL = `http://localhost:5000/resources/images/${this.evento.imagemURL}?_ts=${this.dataAtual}`;
 
           this.evento.imagemURL = '';
           this.registerForm.patchValue(this.evento);
@@ -76,7 +78,7 @@ export class EventoEditComponent implements OnInit {
             this.redesSociais.push(this.criarRedeSocial(redeSocial));
           });
         }
-      )
+      );
     }
 
     criarLote(lote: any): FormGroup {
@@ -114,11 +116,41 @@ export class EventoEditComponent implements OnInit {
       this.redesSociais.removeAt(id);
     }
 
-    onFileChange(file: FileList) {
+    onFileChange(files: FileList) {
+      const file = files[0];
       const reader = new FileReader();
 
-      reader.onload = (event: any) => this.imagemURL = event.target.result;
+      this.arquivo = file;
 
-      reader.readAsDataURL(file[0]);
+      reader.onload = (event: any) => this.imagemURL = event.target.result;
+      reader.readAsDataURL(file);
+    }
+
+    salvarEvento() {
+      this.evento = Object.assign({id: this.evento.id }, this.registerForm.value);
+      this.evento.imagemURL = this.fileNameToUpdate;
+
+      this.uploadImagem();
+
+      this.eventoService.putEvento(this.evento).subscribe(
+          () => {
+          this.toastr.success('Editado com Sucesso!');
+          console.log(this.evento);
+          }, error => {
+          this.toastr.error(`Erro ao Editar: ${error}`);
+          }
+      );
+    }
+
+    uploadImagem() {
+      if (this.registerForm.get('imagemURL').value !== '') {
+      this.eventoService.postUpload(this.arquivo, this.fileNameToUpdate)
+        .subscribe(
+          () => {
+           this.dataAtual = new Date().getMilliseconds().toString();
+           this.imagemURL = `http://localhost:5000/resources/images/${this.evento.imagemURL}?_ts=${this.dataAtual}`;
+          }
+       );
+      }
     }
   }

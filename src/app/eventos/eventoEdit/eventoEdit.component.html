@@ -90,30 +90,43 @@
           <div>
             <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i=index">
               <fieldset [formGroupName]="i" class="form-group">
-                <legend class="d-flex capitalize">
-                  Lotes
+                <legend class="d-flex justify-content-between capitalize">
+                  {{ lotes.get(i+'.nome').value === '' ?
+                    'Lotes' :
+                    lotes.get(i+'.nome').value
+                  }}
                   <button class="btn btn-sm btn-warning mb-1" (click)="removerLote(i)">remove</button>
                 </legend>
                 <div class="row">
                   <div class="form-group col-md-4">
                     <label>Nome</label>
-                    <input type="text" class="form-control" formControlName="nome" placeholder="Lote">
+                    <input type="text" class="form-control"
+                   [ngClass]="{'is-invalid': lotes.get(i+'.nome').errors &&
+                    lotes.get(i+'.nome').touched}" formControlName="nome" placeholder="Lote">
                   </div>
                   <div class="form-group col-md-4">
                     <label>Quantidade</label>
-                    <input type="text" class="form-control" formControlName="quantidade" placeholder="000">
+                    <input type="text" class="form-control"
+                    [ngClass]="{'is-invalid': lotes.get(i+'.quantidade').errors &&
+                    lotes.get(i+'.quantidade').touched}" formControlName="quantidade" placeholder="000">
                   </div>
                   <div class="form-group col-md-4">
                     <label>Preço</label>
-                    <input type="text" class="form-control" formControlName="preco" placeholder="R$ 0,00">
+                    <input type="text" currencyMask
+                    [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left' }"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': lotes.get(i+'.preco').errors &&
+                    lotes.get(i+'.preco').touched}" formControlName="preco" placeholder="R$ 0,00">
                   </div>
                   <div class="form-group col-md-4">
                     <label>Data Início</label>
-                    <input type="text" class="form-control" formControlName="dataInicio" placeholder="01/01/2019">
+                    <input type="text" class="form-control"
+                   formControlName="dataInicio" placeholder="01/01/2019">
                   </div>
                   <div class="form-group col-md-4">
                     <label>Data Fim</label>
-                    <input type="text" class="form-control" formControlName="dataFim" placeholder="01/01/2019">
+                    <input type="text" class="form-control"
+                    formControlName="dataFim" placeholder="01/01/2019">
                   </div>
 
                 </div>
@@ -125,16 +138,20 @@
           </div>
         </tab>
         <tab heading="Redes Sociais">
-          <div formArrayName="redesSociais" *ngFor="let redeSocial of redesSociais.controls; let i=index">
-              <fieldset [formGroupName]="i" class="form-group">
+          <div formArrayName="redesSociais" *ngFor="let redeSocial of redesSociais.controls; let j=index">
+              <fieldset [formGroupName]="j" class="form-group">
               <legend class="d-flex justify-content-between capitalize">
-                Redes Sociais
-                <button class="btn btn-sm btn-warning mb-1" (click)="removerRedeSocial(i)">remove</button>
+                {{ redesSociais.get(j+'.nome').value === '' ?
+                'Redes Sociais' :
+                redesSociais.get(j+'.nome').value?.replace('fab fa-', '')
+                }}
+                <button class="btn btn-sm btn-warning mb-1" (click)="removerRedeSocial(j)">remove</button>
               </legend>
               <div class="row">
                 <div class="form-group col-md-4">
                   <label>Nome</label>
-                  <select class="form-control" formControlName="nome">
+                  <select class="form-control" [ngClass]="{'is-invalid': redesSociais.get(j+'.nome').errors &&
+                    redesSociais.get(j+'.nome').touched}" formControlName="nome">
                     <option value="">Selecione</option>
                     <option value="fab fa-youtube">Youtube</option>
                     <option value="fab fa-instagram">Instagram</option>
@@ -151,7 +168,9 @@
                 </div>
                 <div class="form-group col-md-4">
                   <label>Link</label>
-                  <input type="text" formControlName="url" class="form-control" placeholder="URL">
+                  <input type="text" prefix="http://" mask=""
+                  [ngClass]="{'is-invalid': redesSociais.get(j+'.url').errors &&
+                  redesSociais.get(j+'.url').touched}" formControlName="url" class="form-control" placeholder="URL">
                 </div>
               </div>
             </fieldset>
@@ -164,15 +183,17 @@
       <div class="row">
         <div class="col-md-12 d-flex justify-content-end">
           <!-- {{registerForm.value | json}} -->
-          <button [disabled]="!registerForm.valid" class="btn btn-success my-2" >Salvar
-            Alterações</button>
+          <button [disabled]="!registerForm.valid" class="btn btn-success my-2"
+          (click)="salvarEvento()">
+          Salvar Alterações
+          </button>
         </div>
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-row">
         <div class="form-group col-md-9">
-          <input type="file" #file (change)="onFileChange($event)" class="form-control is-invalid"
+          <input type="file" #file (change)="onFileChange($event.target.files)" class="form-control is-invalid"
             formControlName="imagemURL" placeholder="" style="display: none">
         </div>
       </div>
@@ -201,9 +222,10 @@
           </p>
           <div class="row">
             <div class="icon-block col-md-8 iconesSociais">
-              <a class="mr-3"
+              <a href="{{redesSociais.get(l+'.url').value}}"
+              *ngFor="let redeSocial of redesSociais.controls; let l=index;" class="mr-3"
                 target="_blank">
-                <i class="fab fa-youtube"></i>
+                <i class="{{redesSociais.get(l+'.nome').value}}"></i>
               </a>
             </div>
             <!--div class="col-md-4 d-flex justify-content-center">

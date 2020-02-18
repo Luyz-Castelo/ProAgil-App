@@ -6,6 +6,7 @@ import { TooltipModule, ModalModule, BsDropdownModule, BsDatepickerModule, TabsM
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaskModule } from 'ngx-mask';
+import { NgxCurrencyModule } from 'ngx-currency';
 import { ToastrModule } from 'ngx-toastr';
 
 import { EventoService } from './_services/evento.service';
@@ -48,6 +49,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
       ModalModule.forRoot(),
       TabsModule.forRoot(),
       NgxMaskModule.forRoot(),
+      NgxCurrencyModule,
       BrowserAnimationsModule,
       ToastrModule.forRoot({
          timeOut: 3000,
